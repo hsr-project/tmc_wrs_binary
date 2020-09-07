@@ -26,7 +26,9 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-IMAGE_NAME="registry.open.hsr.io/official/tmc_wrs_docker"
+set -e
+
+IMAGE_NAME="docker.pkg.github.com/hsr-project/tmc_wrs_docker/tmc_wrs_docker"
 
 BUILD_DATE=`date +%Y%m%d`
 BUILD_ARGS=""
@@ -42,4 +44,4 @@ if [[ -n "${no_proxy}" ]]; then
 fi
 
 docker build ${BUILD_ARGS} -t ${IMAGE_NAME}:latest . # -t ${IMAGE_NAME}:${BUILD_DATE}
-docker build ${BUILD_ARGS} -f Dockerfile.nvidia -t ${IMAGE_NAME}:nvidia . # -t ${IMAGE_NAME}:nvidia-${BUILD_DATE}
+docker build ${BUILD_ARGS} --build-arg BASE_IMAGE=${IMAGE_NAME}:latest -f Dockerfile.nvidia -t ${IMAGE_NAME}:nvidia . # -t ${IMAGE_NAME}:nvidia-${BUILD_DATE}

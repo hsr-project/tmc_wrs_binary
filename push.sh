@@ -26,6 +26,6 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-# to hsr.io
-docker push registry.open.hsr.io/official/tmc_wrs_docker:latest
-docker push registry.open.hsr.io/official/tmc_wrs_docker:nvidia
+# to github
+docker push docker.pkg.github.com/hsr-project/tmc_wrs_docker/tmc_wrs_docker:latest
+docker push docker.pkg.github.com/hsr-project/tmc_wrs_docker/tmc_wrs_docker:nvidia
