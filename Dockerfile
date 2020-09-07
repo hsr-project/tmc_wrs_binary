@@ -24,42 +24,37 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-FROM devrt/ros-devcontainer-vscode:melodic-desktop AS base
+FROM ros:melodic
 
-USER root
+SHELL ["/bin/bash", "-c"]
 
 ENV DEBIAN_FRONTEND noninteractive
-ENV CC /usr/bin/gcc
-ENV CXX /usr/bin/g++
+
+RUN apt-get update && \
+    apt-get install -y curl apt-transport-https python-pip && \
+    apt-get clean
+
+# OSRF distribution is better for gazebo
+RUN sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list' && \
+    curl -L http://packages.osrfoundation.org/gazebo.key | apt-key add -
 
 # install depending packages
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install --no-install-recommends -y \
-    mesa-utils htop imagemagick \
     ros-melodic-gazebo-ros ros-melodic-gazebo-plugins ros-melodic-gazebo-ros-control libgazebo9-dev libignition-transport4-dev libpoco-dev python-scipy libgsl-dev \
-    ros-melodic-slam-karto \
-    ros-melodic-rviz \
     ros-melodic-dwa-local-planner \
-    ros-melodic-teleop-twist-joy \
     ros-melodic-eigen-conversions \
-    ros-melodic-moveit-commander \
-    ros-melodic-joy \
     ros-melodic-robot-state-publisher \
     ros-melodic-moveit-core \
-    ros-melodic-moveit-ros-benchmarks \
     ros-melodic-moveit-planners-ompl \
     ros-melodic-moveit-ros-planning \
-    ros-melodic-moveit-ros-visualization \
     ros-melodic-moveit-ros-move-group \
     ros-melodic-moveit-simple-controller-manager \
-    ros-melodic-moveit-setup-assistant \
     ros-melodic-urdfdom-py \
     ros-melodic-roslint \
-    ros-melodic-teleop-twist-keyboard \
     ros-melodic-joint-state-controller \
     ros-melodic-joint-trajectory-controller \
-    ros-melodic-gmapping \
     ros-melodic-move-base \
     ros-melodic-map-server \
     ros-melodic-xacro \
@@ -67,35 +62,32 @@ RUN apt-get update && \
     liburdfdom-tools \
     ros-melodic-image-proc \
     ros-melodic-depth-image-proc \
-    ros-melodic-amcl \
     ros-melodic-effort-controllers \
     ros-melodic-ros-controllers \
-    ros-melodic-hector-mapping \
-    ros-melodic-pcl-ros && \
-    pip install -U --ignore-installed pyassimp && \
+    ros-melodic-pcl-ros \
+    ros-melodic-tf-conversions \
+    ros-melodic-moveit-ros-perception && \
+    pip install -U --ignore-installed pyassimp supervisor supervisor_twiddler && \
     apt-get autoremove -y && \
     apt-get clean
-
-FROM base AS build
-
-SHELL ["/bin/bash", "-c"]
 
 RUN mkdir /wrs_ws
 ADD src /wrs_ws/src
 RUN cd /wrs_ws/src && source /opt/ros/$ROS_DISTRO/setup.bash && catkin_init_workspace || true
 #RUN cd /wrs_ws && source /opt/ros/$ROS_DISTRO/setup.bash && rosdep update && rosdep install --from-paths src --ignore-src -r -y
-RUN cd /wrs_ws && source /opt/ros/$ROS_DISTRO/setup.bash && catkin_make install -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/opt/wrs -DCATKIN_ENABLE_TESTING=0
+RUN cd /wrs_ws && source /opt/ros/$ROS_DISTRO/setup.bash && catkin_make install -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/opt/ros/$ROS_DISTRO -DCATKIN_ENABLE_TESTING=0
 
-FROM base
-
-RUN mv /entrypoint.sh /entrypoint-original.sh
 ADD entrypoint-wrs.sh /entrypoint.sh
 
-ADD start-simulator.sh /start-simulator.sh
-ADD start-simulator-highrtf.sh /start-simulator-highrtf.sh
-ADD start-simulator-fast.sh /start-simulator-fast.sh
-ADD start-simulator-fast-highrtf.sh /start-simulator-fast-highrtf.sh
+ENTRYPOINT ["/entrypoint.sh"]
 
-COPY --from=build /opt/wrs /opt/wrs
-#ADD filterable-rosmaster.py /opt/ros/kinetic/bin/
-#RUN rm /opt/ros/kinetic/bin/rosmaster && ln -s /opt/ros/kinetic/bin/filterable-rosmaster.py /opt/ros/kinetic/bin/rosmaster
+#ADD filterable-rosmaster.py /opt/ros/melodic/bin/
+#RUN rm /opt/ros/$ROS_DISTRO/bin/rosmaster && ln -s /opt/ros/$ROS_DISTRO/bin/filterable-rosmaster.py /opt/ros/$ROS_DISTRO/bin/rosmaster
+
+RUN source /opt/ros/$ROS_DISTRO/setup.bash && rosrun tmc_gazebo_task_evaluators setup_score_widget
+
+ADD supervisord.conf /etc/supervisor/supervisord.conf
+
+VOLUME ["/opt/ros/melodic/share/hsrb_description", "/opt/ros/melodic/share/hsrb_meshes"]
+
+CMD ["/usr/local/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]

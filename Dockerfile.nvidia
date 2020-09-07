@@ -24,8 +24,11 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
+
+ARG BASE_IMAGE
+
 FROM nvidia/opengl:1.1-glvnd-runtime-ubuntu16.04 AS glvnd
-FROM registry.hsr.io/public_sim/tmc_wrs_docker
+FROM ${BASE_IMAGE}
 
 # install glvnd
 COPY --from=glvnd /usr/local/lib/x86_64-linux-gnu /usr/local/lib/x86_64-linux-gnu

@@ -28,7 +28,6 @@
 set -e
 
 source /opt/ros/$ROS_DISTRO/setup.bash
-source /opt/wrs/setup.bash
 source /usr/share/gazebo/setup.sh
 
 # make rosmaster accesible from the host
@@ -36,9 +35,5 @@ export ROS_IP=`hostname -i`
 
 # reject access to gazebo service from external host
 export GAZEBO_IP_WHITE_LIST="127.0.0.1"
-
-if [ -f /entrypoint-original.sh ]; then
-    /entrypoint-original.sh "cat /dev/null"
-fi
 
 exec "$@"
