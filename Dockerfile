@@ -51,6 +51,7 @@ RUN apt-get update && \
     ros-melodic-moveit-planners-ompl \
     ros-melodic-moveit-ros-planning \
     ros-melodic-moveit-ros-move-group \
+    ros-melodic-moveit-ros-manipulation \
     ros-melodic-moveit-simple-controller-manager \
     ros-melodic-urdfdom-py \
     ros-melodic-roslint \
