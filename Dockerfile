@@ -47,6 +47,7 @@ RUN apt-get update && \
     ros-melodic-eigen-conversions \
     ros-melodic-robot-state-publisher \
     ros-melodic-moveit-core \
+    ros-melodic-moveit-plugins \
     ros-melodic-moveit-planners-ompl \
     ros-melodic-moveit-ros-planning \
     ros-melodic-moveit-ros-move-group \
@@ -91,3 +92,4 @@ ADD supervisord.conf /etc/supervisor/supervisord.conf
 VOLUME ["/opt/ros/melodic/share/hsrb_description", "/opt/ros/melodic/share/hsrb_meshes"]
 
 CMD ["/usr/local/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]
+
