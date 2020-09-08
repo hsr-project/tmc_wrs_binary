@@ -56,3 +56,5 @@ RUN curl -sSL https://downloads.sourceforge.net/project/virtualgl/"${VIRTUALGL_V
     /opt/VirtualGL/bin/vglserver_config -config +s +f -t && \
     rm virtualgl_*_amd64.deb
 ENV PATH /opt/VirtualGL/bin:${PATH}
+
+RUN sed -i -e 's/ roslaunch / \/opt\/VirtualGL\/bin\/vglrun roslaunch /' /etc/supervisor/supervisord.conf
