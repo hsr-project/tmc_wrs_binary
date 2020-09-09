@@ -90,7 +90,7 @@ RUN source /opt/ros/$ROS_DISTRO/setup.bash && rosrun tmc_gazebo_task_evaluators 
 
 ADD supervisord.conf /etc/supervisor/supervisord.conf
 
-VOLUME ["/opt/ros/melodic/share/hsrb_description", "/opt/ros/melodic/share/hsrb_meshes"]
+VOLUME ["/opt/ros/melodic/share/hsrb_description", "/opt/ros/melodic/share/hsrb_meshes", "/opt/ros/melodic/share/hsrb_rosnav_config"]
 
 CMD ["/usr/local/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]
 
