@@ -28,7 +28,7 @@
 
 set -e
 
-IMAGE_NAME="docker.pkg.github.com/hsr-project/tmc_wrs_docker/tmc_wrs_docker"
+IMAGE_NAME="ghcr.io/hsr-project/tmc_wrs_docker"
 
 BUILD_DATE=`date +%Y%m%d`
 BUILD_ARGS=""
