@@ -1,0 +1,54 @@
+[submodule "src/bio_ik"]
+	path = src/bio_ik
+	url = https://github.com/TAMS-Group/bio_ik.git
+[submodule "src/hsrb_common_config"]
+	path = src/hsrb_common_config
+	url = https://github.com/hsr-project/hsrb_common_config.git
+[submodule "src/hsrb_description"]
+	path = src/hsrb_description
+	url = https://github.com/hsr-project/hsrb_description.git
+[submodule "src/hsrb_gazebo_bringup"]
+	path = src/hsrb_gazebo_bringup
+	url = https://github.com/hsr-project/hsrb_gazebo_bringup.git
+[submodule "src/hsrb_gazebo_plugins"]
+	path = src/hsrb_gazebo_plugins
+	url = https://github.com/hsr-project/hsrb_gazebo_plugins.git
+[submodule "src/hsrb_meshes"]
+	path = src/hsrb_meshes
+	url = https://github.com/hsr-project/hsrb_meshes.git
+[submodule "src/hsrb_moveit_config"]
+	path = src/hsrb_moveit_config
+	url = https://github.com/hsr-project/hsrb_moveit_config.git
+[submodule "src/hsrb_rosnav"]
+	path = src/hsrb_rosnav
+	url = https://github.com/hsr-project/hsrb_rosnav.git
+[submodule "src/hsrb_wrs_gazebo_launch"]
+	path = src/hsrb_wrs_gazebo_launch
+	url = https://github.com/hsr-project/hsrb_wrs_gazebo_launch.git
+[submodule "src/iris_lama_ros"]
+	path = src/iris_lama_ros
+	url = https://github.com/iris-ua/iris_lama_ros.git
+[submodule "src/iris_lama"]
+	path = src/iris_lama
+	url = https://github.com/iris-ua/iris_lama.git
+[submodule "src/mobile_manipulator_tools"]
+	path = src/mobile_manipulator_tools
+	url = https://github.com/devrt/mobile-manipulator-tools.git
+[submodule "src/offset_diff_drive_controller"]
+	path = src/offset_diff_drive_controller
+	url = https://github.com/devrt/offset-diff-drive-controller.git
+[submodule "src/tmc_control_msgs"]
+	path = src/tmc_control_msgs
+	url = https://github.com/hsr-project/tmc_control_msgs.git
+[submodule "src/tmc_gazebo_plugins"]
+	path = src/tmc_gazebo_plugins
+	url = https://github.com/hsr-project/tmc_gazebo_plugins.git
+[submodule "src/tmc_gazebo_task_evaluators"]
+	path = src/tmc_gazebo_task_evaluators
+	url = https://github.com/hsr-project/tmc_gazebo_task_evaluators.git
+[submodule "src/tmc_suction"]
+	path = src/tmc_suction
+	url = https://github.com/hsr-project/tmc_suction.git
+[submodule "src/tmc_wrs_gazebo"]
+	path = src/tmc_wrs_gazebo
+	url = https://github.com/hsr-project/tmc_wrs_gazebo.git
