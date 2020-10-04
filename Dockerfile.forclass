@@ -1,5 +1,5 @@
-#!/bin/bash
-# Copyright (c) 2020 TOYOTA MOTOR CORPORATION
+# Copyright (c) 2019 TOYOTA MOTOR CORPORATION
+# Copyright (c) 2020 MID Academic Promotions, Inc.
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,23 +26,13 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-set -e
+ARG BASE_IMAGE
 
-IMAGE_NAME="ghcr.io/hsr-project/tmc_wrs_docker"
+FROM ${BASE_IMAGE}
 
-BUILD_DATE=`date +%Y%m%d`
-BUILD_ARGS=""
+RUN sed -i -e 's/<update_rate>30<\/update_rate>/<update_rate>10<\/update_rate>/' /opt/ros/melodic/share/hsrb_description/urdf/sensors/asus_xtion.gazebo.xacro
+RUN sed -i -e 's/<update_rate>30<\/update_rate>/<update_rate>10<\/update_rate>/' /opt/ros/melodic/share/hsrb_description/urdf/sensors/intel_d435.gazebo.xacro
+RUN sed -i -e 's/<update_rate>30\.0<\/update_rate>/<update_rate>10\.0<\/update_rate>/' /opt/ros/melodic/share/hsrb_description/urdf/sensors/hokuyo_laser.gazebo.xacro
 
-if [[ -n "${http_proxy}" ]]; then
-    BUILD_ARGS="${BUILD_ARGS} --build-arg http_proxy=${http_proxy}"
-fi
-if [[ -n "${https_proxy}" ]]; then
-    BUILD_ARGS="${BUILD_ARGS} --build-arg https_proxy=${https_proxy}"
-fi
-if [[ -n "${no_proxy}" ]]; then
-    BUILD_ARGS="${BUILD_ARGS} --build-arg no_proxy=${no_proxy}"
-fi
-
-docker build ${BUILD_ARGS} -t ${IMAGE_NAME}:latest . # -t ${IMAGE_NAME}:${BUILD_DATE}
-docker build ${BUILD_ARGS} --build-arg BASE_IMAGE=${IMAGE_NAME}:latest -f Dockerfile.nvidia -t ${IMAGE_NAME}:nvidia . # -t ${IMAGE_NAME}:nvidia-${BUILD_DATE}
-docker build ${BUILD_ARGS} --build-arg BASE_IMAGE=${IMAGE_NAME}:latest -f Dockerfile.forclass -t ${IMAGE_NAME}:forclass . # -t ${IMAGE_NAME}:forclass-${BUILD_DATE}
+RUN sed -i -e 's/highrtf:=true/highrtf:=false/' /etc/supervisor/supervisord.conf
+RUN sed -i -e 's/wrs_practice0_easy_tmc\.launch/wrs_empty\.launch/' /etc/supervisor/supervisord.conf
