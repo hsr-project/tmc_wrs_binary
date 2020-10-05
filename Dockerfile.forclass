@@ -30,6 +30,11 @@ ARG BASE_IMAGE
 
 FROM ${BASE_IMAGE}
 
+RUN mkdir -p /workspace/notebooks-readonly && \
+    git clone --depth=1 https://github.com/hsr-project/notebooks.git /workspace/notebooks-readonly
+
+VOLUME ["/workspace/notebooks-readonly"]
+
 RUN sed -i -e 's/<update_rate>30<\/update_rate>/<update_rate>10<\/update_rate>/' /opt/ros/melodic/share/hsrb_description/urdf/sensors/asus_xtion.gazebo.xacro
 RUN sed -i -e 's/<update_rate>30<\/update_rate>/<update_rate>10<\/update_rate>/' /opt/ros/melodic/share/hsrb_description/urdf/sensors/intel_d435.gazebo.xacro
 RUN sed -i -e 's/<update_rate>30\.0<\/update_rate>/<update_rate>10\.0<\/update_rate>/' /opt/ros/melodic/share/hsrb_description/urdf/sensors/hokuyo_laser.gazebo.xacro
