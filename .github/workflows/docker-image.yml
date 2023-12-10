@@ -53,7 +53,7 @@ jobs:
       - name: Build and push nvidia image
         uses: docker/build-push-action@v5
         with:
-          platforms: linux/arm64/v8,linux/amd64
+          platforms: linux/amd64
           file: Dockerfile.nvidia
           build-args: |
             BASE_IMAGE=ghcr.io/hsr-project/tmc_wrs_binary:${{ matrix.version }}-latest
