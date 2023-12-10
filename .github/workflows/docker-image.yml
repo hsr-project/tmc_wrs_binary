@@ -31,31 +31,31 @@ jobs:
         with:
           platforms: linux/arm64/v8,linux/amd64
           push: true
-          tags: ghcr.io/hsr-project/tmc_wrs_docker:${{ matrix.version }}-latest
+          tags: ghcr.io/hsr-project/tmc_wrs_binary:${{ matrix.version }}-latest
       - name: Build and push challenge image
         uses: docker/build-push-action@v5
         with:
           platforms: linux/arm64/v8,linux/amd64
           file: Dockerfile.challenge
           build-args: |
-            BASE_IMAGE=ghcr.io/hsr-project/tmc_wrs_docker:${{ matrix.version }}-latest
+            BASE_IMAGE=ghcr.io/hsr-project/tmc_wrs_binary:${{ matrix.version }}-latest
           push: true
-          tags: ghcr.io/hsr-project/tmc_wrs_docker:${{ matrix.version }}-challenge
+          tags: ghcr.io/hsr-project/tmc_wrs_binary:${{ matrix.version }}-challenge
       - name: Build and push forclass image
         uses: docker/build-push-action@v5
         with:
           platforms: linux/arm64/v8,linux/amd64
           file: Dockerfile.forclass
           build-args: |
-            BASE_IMAGE=ghcr.io/hsr-project/tmc_wrs_docker:${{ matrix.version }}-latest
+            BASE_IMAGE=ghcr.io/hsr-project/tmc_wrs_binary:${{ matrix.version }}-latest
           push: true
-          tags: ghcr.io/hsr-project/tmc_wrs_docker:${{ matrix.version }}-forclass
+          tags: ghcr.io/hsr-project/tmc_wrs_binary:${{ matrix.version }}-forclass
       - name: Build and push nvidia image
         uses: docker/build-push-action@v5
         with:
           platforms: linux/arm64/v8,linux/amd64
           file: Dockerfile.nvidia
           build-args: |
-            BASE_IMAGE=ghcr.io/hsr-project/tmc_wrs_docker:${{ matrix.version }}-latest
+            BASE_IMAGE=ghcr.io/hsr-project/tmc_wrs_binary:${{ matrix.version }}-latest
           push: true
-          tags: ghcr.io/hsr-project/tmc_wrs_docker:${{ matrix.version }}-nvidia
+          tags: ghcr.io/hsr-project/tmc_wrs_binary:${{ matrix.version }}-nvidia
