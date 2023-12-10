@@ -24,14 +24,14 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-FROM ros:melodic
+FROM ros:noetic
 
 SHELL ["/bin/bash", "-c"]
 
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && \
-    apt-get install -y curl apt-transport-https python-pip && \
+    apt-get install -y curl git apt-transport-https python3-pip python-is-python3 && \
     apt-get clean
 
 # OSRF distribution is better for gazebo
@@ -42,33 +42,34 @@ RUN sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install --no-install-recommends -y \
-    ros-melodic-gazebo-ros ros-melodic-gazebo-plugins ros-melodic-gazebo-ros-control libgazebo9-dev libignition-transport4-dev libpoco-dev python-scipy libgsl-dev \
-    ros-melodic-dwa-local-planner \
-    ros-melodic-eigen-conversions \
-    ros-melodic-robot-state-publisher \
-    ros-melodic-moveit-core \
-    ros-melodic-moveit-plugins \
-    ros-melodic-moveit-planners-ompl \
-    ros-melodic-moveit-ros-planning \
-    ros-melodic-moveit-ros-move-group \
-    ros-melodic-moveit-ros-manipulation \
-    ros-melodic-moveit-simple-controller-manager \
-    ros-melodic-urdfdom-py \
-    ros-melodic-roslint \
-    ros-melodic-joint-state-controller \
-    ros-melodic-joint-trajectory-controller \
-    ros-melodic-move-base \
-    ros-melodic-map-server \
-    ros-melodic-xacro \
-    ros-melodic-joint-state-publisher \
+    ros-noetic-gazebo-ros ros-noetic-gazebo-plugins ros-noetic-gazebo-ros-control libgazebo11-dev libignition-transport8-dev libpoco-dev python3-scipy libgsl-dev \
+    ros-noetic-dwa-local-planner \
+    ros-noetic-eigen-conversions \
+    ros-noetic-robot-state-publisher \
+    ros-noetic-moveit-core \
+    ros-noetic-moveit-plugins \
+    ros-noetic-moveit-planners-ompl \
+    ros-noetic-moveit-ros-planning \
+    ros-noetic-moveit-ros-move-group \
+    ros-noetic-moveit-ros-manipulation \
+    ros-noetic-moveit-simple-controller-manager \
+    ros-noetic-urdfdom-py \
+    ros-noetic-roslint \
+    ros-noetic-joint-state-controller \
+    ros-noetic-joint-trajectory-controller \
+    ros-noetic-move-base \
+    ros-noetic-map-server \
+    ros-noetic-xacro \
+    ros-noetic-joint-state-publisher \
     liburdfdom-tools \
-    ros-melodic-image-proc \
-    ros-melodic-depth-image-proc \
-    ros-melodic-effort-controllers \
-    ros-melodic-ros-controllers \
-    ros-melodic-pcl-ros \
-    ros-melodic-tf-conversions \
-    ros-melodic-moveit-ros-perception && \
+    ros-noetic-image-proc \
+    ros-noetic-depth-image-proc \
+    ros-noetic-effort-controllers \
+    ros-noetic-ros-controllers \
+    ros-noetic-pcl-ros \
+    ros-noetic-tf-conversions \
+    ros-noetic-moveit-ros-perception \
+    python-configparser && \
     pip install -U --ignore-installed pyassimp supervisor supervisor_twiddler && \
     apt-get autoremove -y && \
     apt-get clean
@@ -83,7 +84,7 @@ ADD entrypoint-wrs.sh /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
 
-#ADD filterable-rosmaster.py /opt/ros/melodic/bin/
+#ADD filterable-rosmaster.py /opt/ros/noetic/bin/
 #RUN rm /opt/ros/$ROS_DISTRO/bin/rosmaster && ln -s /opt/ros/$ROS_DISTRO/bin/filterable-rosmaster.py /opt/ros/$ROS_DISTRO/bin/rosmaster
 
 RUN source /opt/ros/$ROS_DISTRO/setup.bash && rosrun tmc_gazebo_task_evaluators setup_score_widget
@@ -91,17 +92,20 @@ RUN source /opt/ros/$ROS_DISTRO/setup.bash && rosrun tmc_gazebo_task_evaluators 
 ADD supervisord.conf /etc/supervisor/supervisord.conf
 
 VOLUME [ \
-    "/opt/ros/melodic/share/hsrb_description", \
-    "/opt/ros/melodic/share/hsrb_meshes", \
-    "/opt/ros/melodic/share/tmc_wrs_gazebo_worlds", \
-    "/opt/ros/melodic/share/gazebo_ros", \
-    "/opt/ros/melodic/lib/gazebo_ros", \
-    "/opt/ros/melodic/lib/python2.7/dist-packages/gazebo_ros", \
-    "/opt/ros/melodic/lib/python2.7/dist-packages/gazebo_msgs", \
-    "/opt/ros/melodic/share/hsrb_rosnav_config", \
-    "/opt/ros/melodic/share/tmc_control_msgs", \
-    "/opt/ros/melodic/lib/python2.7/dist-packages/tmc_control_msgs", \
-    "/opt/ros/melodic/include/tmc_control_msgs" \
+    "/opt/ros/noetic/share/hsrb_description", \
+    "/opt/ros/noetic/share/hsrb_meshes", \
+    "/opt/ros/noetic/share/tmc_wrs_gazebo_worlds", \
+    "/opt/ros/noetic/share/gazebo_ros", \
+    "/opt/ros/noetic/lib/gazebo_ros", \
+    "/opt/ros/noetic/lib/python2.7/dist-packages/gazebo_ros", \
+    "/opt/ros/noetic/lib/python3/dist-packages/gazebo_ros", \
+    "/opt/ros/noetic/lib/python2.7/dist-packages/gazebo_msgs", \
+    "/opt/ros/noetic/lib/python3/dist-packages/gazebo_msgs", \
+    "/opt/ros/noetic/share/hsrb_rosnav_config", \
+    "/opt/ros/noetic/share/tmc_control_msgs", \
+    "/opt/ros/noetic/lib/python2.7/dist-packages/tmc_control_msgs", \
+    "/opt/ros/noetic/lib/python3/dist-packages/tmc_control_msgs", \
+    "/opt/ros/noetic/include/tmc_control_msgs" \
     ]
 
 CMD ["/usr/local/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]

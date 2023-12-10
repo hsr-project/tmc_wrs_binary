@@ -28,5 +28,5 @@
 ARG BASE_IMAGE
 FROM ${BASE_IMAGE}
 
-ADD filterable-rosmaster.py /opt/ros/melodic/bin/
+ADD filterable-rosmaster.py /opt/ros/noetic/bin/
 RUN rm /opt/ros/$ROS_DISTRO/bin/rosmaster && ln -s /opt/ros/$ROS_DISTRO/bin/filterable-rosmaster.py /opt/ros/$ROS_DISTRO/bin/rosmaster
