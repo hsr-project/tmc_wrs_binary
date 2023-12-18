@@ -31,7 +31,7 @@ SHELL ["/bin/bash", "-c"]
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && \
-    apt-get install -y curl git apt-transport-https python3-pip python-is-python3 && \
+    apt-get install -y curl git apt-transport-https python3-pip python-is-python3 python3-catkin-tools && \
     apt-get clean
 
 # OSRF distribution is better for gazebo
@@ -76,9 +76,13 @@ RUN apt-get update && \
 
 RUN mkdir /wrs_ws
 ADD src /wrs_ws/src
-RUN cd /wrs_ws/src && source /opt/ros/$ROS_DISTRO/setup.bash && catkin_init_workspace || true
+RUN cd /wrs_ws/src && source /opt/ros/$ROS_DISTRO/setup.bash && catkin init
 #RUN cd /wrs_ws && source /opt/ros/$ROS_DISTRO/setup.bash && rosdep update && rosdep install --from-paths src --ignore-src -r -y
-RUN cd /wrs_ws && source /opt/ros/$ROS_DISTRO/setup.bash && catkin_make install -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/opt/ros/$ROS_DISTRO -DCATKIN_ENABLE_TESTING=0
+RUN cd /wrs_ws && \
+    source /opt/ros/$ROS_DISTRO/setup.bash && \
+    catkin config --install && \
+    catkin config --cmake-args -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/opt/ros/$ROS_DISTRO -DCATKIN_ENABLE_TESTING=0 && \
+    catkin build
 
 ADD entrypoint-wrs.sh /entrypoint.sh
 
