@@ -52,3 +52,6 @@
 [submodule "src/tmc_wrs_gazebo"]
 	path = src/tmc_wrs_gazebo
 	url = https://github.com/hsr-project/tmc_wrs_gazebo.git
+[submodule "notebooks"]
+	path = notebooks
+	url = https://github.com/hsr-project/notebooks.git

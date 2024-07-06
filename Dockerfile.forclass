@@ -30,8 +30,9 @@ ARG BASE_IMAGE
 
 FROM ${BASE_IMAGE}
 
-RUN mkdir -p /workspace/notebooks-readonly && \
-    git clone --depth=1 https://github.com/hsr-project/notebooks.git /workspace/notebooks-readonly
+RUN mkdir -p /workspace
+
+ADD notebooks /workspace/notebooks-readonly
 
 VOLUME ["/workspace/notebooks-readonly"]
 
